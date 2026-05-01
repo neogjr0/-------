@@ -1,29 +1,30 @@
-name: Daily MOLIT Cache Update
+name: Daily Rebuild
 
 on:
   schedule:
-    - cron: '0 15 * * *'
+    - cron: '0 15 * * *'   # 매일 자정 KST
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install -r requirements.txt
-      - name: Build index.html
-        env:
-          SUPABASE_URL:      ${{ secrets.SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-          MOLIT_API_KEY:     ${{ secrets.MOLIT_API_KEY }}
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: index.html 재빌드
         run: python main.py
-      - name: Commit & push
+
+      - name: 커밋 & 푸시
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

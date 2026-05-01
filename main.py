@@ -37,10 +37,17 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: index.html 재빌드
+      - name: 1. 데이터 수집
+        env:
+          SUPABASE_URL:      ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          MOLIT_API_KEY:     ${{ secrets.MOLIT_API_KEY }}
+        run: python collect.py
+
+      - name: 2. index.html 재빌드
         run: python main.py
 
-      - name: 커밋 & 푸시
+      - name: 3. 커밋 & 푸시
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

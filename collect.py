@@ -68,7 +68,7 @@ def fetch_molit(gu_name: str, months: int) -> list:
                     "apt_name":   apt_name,
                     "area":       float(g("excluUseAr") or 0) or None,
                     "floor_num":  int(g("floor") or 0) or None,
-                    "price":      int(price_raw) * 10,
+                    "price":      int(price_raw),
                     "trade_date": f"{g('dealYear')}-{g('dealMonth').zfill(2)}-{g('dealDay').zfill(2)}",
                 })
         except Exception as e:
